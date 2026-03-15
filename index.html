@@ -602,6 +602,120 @@
     footer { flex-direction: column; text-align: center; padding: 32px 24px; }
     .form-row { grid-template-columns: 1fr; }
   }
+  /* Legal Modals */
+  .legal-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(6px);
+    overflow-y: auto;
+    padding: 40px 20px;
+  }
+  .legal-modal.active { display: flex; align-items: flex-start; justify-content: center; }
+
+  .legal-modal-inner {
+    background: #111;
+    border: 1px solid var(--border);
+    max-width: 760px;
+    width: 100%;
+    padding: 56px;
+    position: relative;
+    animation: fadeUp 0.4s ease forwards;
+  }
+
+  .legal-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 40px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .legal-modal-label {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+
+  .legal-modal-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 40px;
+    font-weight: 300;
+    line-height: 1;
+  }
+  .legal-modal-title em { font-style: italic; color: var(--gold); }
+
+  .legal-modal-close {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    width: 40px;
+    height: 40px;
+    font-size: 14px;
+    cursor: none;
+    flex-shrink: 0;
+    transition: border-color 0.3s, color 0.3s;
+  }
+  .legal-modal-close:hover { border-color: var(--gold); color: var(--gold); }
+
+  .legal-modal-body { color: var(--muted); font-size: 14px; line-height: 1.9; }
+
+  .legal-effective {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    margin-bottom: 24px;
+    text-transform: uppercase;
+  }
+
+  .legal-modal-body h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--white);
+    margin: 32px 0 12px;
+  }
+
+  .legal-modal-body p { margin-bottom: 14px; }
+
+  .legal-modal-body ul {
+    margin: 10px 0 14px 0;
+    padding-left: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .legal-modal-body ul li {
+    padding-left: 20px;
+    position: relative;
+  }
+  .legal-modal-body ul li::before {
+    content: '—';
+    color: var(--gold);
+    position: absolute;
+    left: 0;
+    font-size: 11px;
+  }
+
+  .legal-modal-body a {
+    color: var(--gold);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(201,168,76,0.3);
+    transition: border-color 0.3s;
+  }
+  .legal-modal-body a:hover { border-color: var(--gold); }
+
+  @media (max-width: 900px) {
+    .legal-modal-inner { padding: 32px 24px; }
+    .legal-modal-title { font-size: 30px; }
+  }
 </style>
 </head>
 <body>
@@ -724,28 +838,28 @@
       </div>
     </div>
 
-    <div class="contact-form reveal" style="transition-delay:0.2s">
+    <form class="contact-form reveal" style="transition-delay:0.2s" action="https://formspree.io/f/mvzwbjae" method="POST" id="contactForm">
       <div class="form-row">
         <div class="form-group">
           <label class="form-label">First Name</label>
-          <input type="text" class="form-input" placeholder="John">
+          <input type="text" name="first_name" class="form-input" placeholder="John" required>
         </div>
         <div class="form-group">
           <label class="form-label">Last Name</label>
-          <input type="text" class="form-input" placeholder="Smith">
+          <input type="text" name="last_name" class="form-input" placeholder="Smith" required>
         </div>
       </div>
       <div class="form-group">
         <label class="form-label">Agency / Company</label>
-        <input type="text" class="form-input" placeholder="Smith Insurance Group">
+        <input type="text" name="agency" class="form-input" placeholder="Smith Insurance Group" required>
       </div>
       <div class="form-group">
         <label class="form-label">Email</label>
-        <input type="email" class="form-input" placeholder="john@smithinsurance.com">
+        <input type="email" name="email" class="form-input" placeholder="john@smithinsurance.com" required>
       </div>
       <div class="form-group">
         <label class="form-label">How many closers on your team?</label>
-        <select class="form-select">
+        <select name="team_size" class="form-select" required>
           <option value="" disabled selected>Select</option>
           <option>Just me</option>
           <option>2–5</option>
@@ -755,10 +869,13 @@
       </div>
       <div class="form-group">
         <label class="form-label">Tell us about your current situation</label>
-        <textarea class="form-textarea" placeholder="How are you currently generating leads? What's not working?"></textarea>
+        <textarea name="message" class="form-textarea" placeholder="How are you currently generating leads? What's not working?"></textarea>
       </div>
-      <button class="form-submit">Request a Demo →</button>
-    </div>
+      <button type="submit" class="form-submit" id="submitBtn">Request a Demo →</button>
+      <div id="formSuccess" style="display:none; margin-top:16px; padding:16px; border:1px solid rgba(201,168,76,0.4); color:var(--gold); font-size:13px; letter-spacing:0.1em; text-align:center;">
+        ✦ Message received — we'll be in touch shortly.
+      </div>
+    </form>
   </div>
 </section>
 
@@ -767,12 +884,180 @@
   <div class="footer-logo">NEXUS<span>·</span>LIFE</div>
   <p class="footer-copy">© 2025 Nexus Life. All rights reserved.</p>
   <ul class="footer-links">
-    <li><a href="#">Privacy</a></li>
-    <li><a href="#">Terms</a></li>
+    <li><a href="#" onclick="openModal('privacyModal'); return false;">Privacy</a></li>
+    <li><a href="#" onclick="openModal('termsModal'); return false;">Terms</a></li>
   </ul>
 </footer>
 
+<!-- PRIVACY MODAL -->
+<div id="privacyModal" class="legal-modal">
+  <div class="legal-modal-inner">
+    <div class="legal-modal-header">
+      <div>
+        <div class="legal-modal-label">Legal</div>
+        <h2 class="legal-modal-title">Privacy <em>Policy</em></h2>
+      </div>
+      <button class="legal-modal-close" onclick="closeModal('privacyModal')">✕</button>
+    </div>
+    <div class="legal-modal-body">
+      <p class="legal-effective">Effective Date: 01/18/2025</p>
+      <p>Acasio Insurance / Acasio Seguros LLC ("Acasio," "we," "us," or "our") respects your privacy and is committed to protecting your personal information. This Privacy Policy explains what information we collect, how we use it, and how we safeguard it.</p>
+
+      <h3>1. What Information We Collect</h3>
+      <p>We may collect the following information when you use our website or submit forms:</p>
+      <ul>
+        <li><strong>Personal Information:</strong> name, phone number, email address, and any other information you voluntarily submit.</li>
+        <li><strong>Appointment Information:</strong> appointment date/time, preferences, and consultation-related details.</li>
+        <li><strong>Technical Data (Cookies/Tracking):</strong> IP address, device/browser type, pages visited, time on site, referral sources, and interactions with our website.</li>
+      </ul>
+
+      <h3>2. How We Use Your Information</h3>
+      <p>We use your information to:</p>
+      <ul>
+        <li>Schedule and manage financial consultations</li>
+        <li>Send appointment confirmations, reminders, and service-related updates</li>
+        <li>Respond to inquiries and provide customer support</li>
+        <li>Improve our website and user experience</li>
+        <li>Send promotional messages only if you explicitly opt in</li>
+      </ul>
+
+      <h3>3. SMS Opt-In Details</h3>
+      <p>By submitting your phone number through our website forms and affirmatively checking the SMS consent checkbox, you agree to receive SMS text messages from Acasio Insurance / Acasio Seguros LLC related to your requested consultation, including appointment confirmations, reminders, and service-related updates.</p>
+      <ul>
+        <li>Message frequency may vary</li>
+        <li>Message and data rates may apply</li>
+        <li>Reply STOP to unsubscribe</li>
+        <li>Reply HELP for help</li>
+        <li>Consent is not a condition of purchase</li>
+        <li>Promotional SMS messages will only be sent if you explicitly opt in</li>
+      </ul>
+
+      <h3>4. Cookie & Tracking Practices</h3>
+      <p>We may use cookies and tracking technologies (such as pixels and analytics tools) to understand how visitors use our website, improve website performance and marketing effectiveness, and measure advertising results. You may disable cookies through your browser settings; however, some site features may not function properly.</p>
+
+      <h3>5. Data Security & Handling</h3>
+      <p>We use reasonable administrative, technical, and physical safeguards to protect your personal information. However, no method of transmission over the internet is 100% secure. We do not sell or rent your personal information.</p>
+
+      <h3>6. User Rights</h3>
+      <p>Depending on your location, you may have rights to request access to your personal data, request correction or deletion of your data, withdraw consent for communications at any time, and opt out of SMS by replying STOP. To request changes, contact us using the information below.</p>
+
+      <h3>7. Mobile Information Sharing Statement</h3>
+      <p>We do not share, sell, rent, or disclose mobile phone numbers to third parties for marketing or promotional purposes. Mobile information will not be shared with third parties/affiliates for marketing/promotional purposes.</p>
+
+      <h3>8. Contact Us</h3>
+      <p>If you have any questions about this Privacy Policy, contact us at:<br>
+      Email: <a href="mailto:acasioandres5@gmail.com">acasioandres5@gmail.com</a><br>
+      Phone: 407-979-2101</p>
+    </div>
+  </div>
+</div>
+
+<!-- TERMS MODAL -->
+<div id="termsModal" class="legal-modal">
+  <div class="legal-modal-inner">
+    <div class="legal-modal-header">
+      <div>
+        <div class="legal-modal-label">Legal</div>
+        <h2 class="legal-modal-title">Terms of <em>Service</em></h2>
+      </div>
+      <button class="legal-modal-close" onclick="closeModal('termsModal')">✕</button>
+    </div>
+    <div class="legal-modal-body">
+      <p class="legal-effective">Effective Date: 01/18/2025</p>
+      <p>By accessing this website or submitting your information through our forms, you agree to these Terms of Service.</p>
+
+      <h3>1. Services</h3>
+      <p>Acasio provides financial consultations and insurance-related services.</p>
+
+      <h3>2. Description of SMS Use Cases</h3>
+      <p>If you opt in to receive SMS messages, you may receive messages related to:</p>
+      <ul>
+        <li>Appointment confirmations and reminders</li>
+        <li>Consultation updates and service-related communications</li>
+        <li>Customer support responses</li>
+        <li>Promotional messages only if you explicitly opt in</li>
+      </ul>
+
+      <h3>3. Opt-Out Instructions</h3>
+      <p>You can opt out of SMS messages at any time by replying STOP. For help, reply HELP.</p>
+
+      <h3>4. Customer Support Contact</h3>
+      <p>Email: <a href="mailto:acasioandres5@gmail.com">acasioandres5@gmail.com</a><br>
+      Phone: 407-979-2101</p>
+
+      <h3>5. Message & Data Rate Disclosure</h3>
+      <p>Message and data rates may apply. Message frequency may vary.</p>
+
+      <h3>6. Carrier Liability Disclaimer</h3>
+      <p>Carriers are not liable for delayed or undelivered messages.</p>
+
+      <h3>7. Age Restriction (18+)</h3>
+      <p>This website and services are intended for individuals 18 years of age or older.</p>
+
+      <h3>8. No Guarantees</h3>
+      <p>We do not guarantee specific financial or insurance outcomes. Results vary depending on individual circumstances.</p>
+
+      <h3>9. Link to Privacy Policy</h3>
+      <p>Privacy Policy: <a href="#" onclick="closeModal('termsModal'); openModal('privacyModal'); return false;">View Privacy Policy</a></p>
+
+      <h3>10. Updates</h3>
+      <p>We may update these Terms from time to time. Updates will be posted on this page with a revised effective date.</p>
+    </div>
+  </div>
+</div>
+
 <script>
+  // Legal modals
+  function openModal(id) {
+    document.getElementById(id).classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal(id) {
+    document.getElementById(id).classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  document.querySelectorAll('.legal-modal').forEach(modal => {
+    modal.addEventListener('click', e => {
+      if (e.target === modal) closeModal(modal.id);
+    });
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') document.querySelectorAll('.legal-modal.active').forEach(m => closeModal(m.id));
+  });
+
+  // Formspree async form submission
+  const form = document.getElementById('contactForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const formSuccess = document.getElementById('formSuccess');
+
+  if (form) {
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      submitBtn.textContent = 'Sending...';
+      submitBtn.disabled = true;
+
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (response.ok) {
+          form.querySelectorAll('input, select, textarea').forEach(el => el.value = '');
+          submitBtn.style.display = 'none';
+          formSuccess.style.display = 'block';
+        } else {
+          submitBtn.textContent = 'Something went wrong — try again';
+          submitBtn.disabled = false;
+        }
+      } catch {
+        submitBtn.textContent = 'Something went wrong — try again';
+        submitBtn.disabled = false;
+      }
+    });
+  }
+
   // Cursor
   const cursor = document.getElementById('cursor');
   const ring = document.getElementById('cursorRing');

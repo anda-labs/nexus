@@ -934,7 +934,7 @@
 
       <h3>7. Contact Us</h3>
       <p>If you have any questions about this Privacy Policy, contact us at:<br>
-      Email: <a href="mailto:acasioandres@yahoo.com">acasioandres@yahoo.com</a></p>
+      Email: <a href="/cdn-cgi/l/email-protection#e7868486948e88868983958294a79e868f8888c984888a"><span class="__cf_email__" data-cfemail="d2b3b1b3a1bbbdb3bcb6a0b7a192abb3babdbdfcb1bdbf">[email&#160;protected]</span></a></p>
     </div>
   </div>
 </div>
@@ -970,7 +970,7 @@
 
       <h3>6. Customer Support Contact</h3>
       <p>For support or inquiries, contact:<br>
-      Email: <a href="mailto:acasioandres@yahoo.com">acasioandres@yahoo.com</a></p>
+      Email: <a href="/cdn-cgi/l/email-protection#9efffdffedf7f1fff0faecfbeddee7fff6f1f1b0fdf1f3"><span class="__cf_email__" data-cfemail="dbbab8baa8b2b4bab5bfa9bea89ba2bab3b4b4f5b8b4b6">[email&#160;protected]</span></a></p>
 
       <h3>7. Updates</h3>
       <p>We may update these Terms from time to time. Updates will be posted on this page with a revised effective date.</p>
@@ -981,7 +981,16 @@
   </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // Hash-based modal opening
+  function handleHash() {
+    const hash = window.location.hash;
+    if (hash === '#privacy') openModal('privacyModal');
+    else if (hash === '#terms') openModal('termsModal');
+  }
+  handleHash();
+  window.addEventListener('hashchange', handleHash);
+
   // Legal modals
   function openModal(id) {
     document.getElementById(id).classList.add('active');
@@ -990,6 +999,7 @@
   function closeModal(id) {
     document.getElementById(id).classList.remove('active');
     document.body.style.overflow = '';
+    history.replaceState(null, '', window.location.pathname);
   }
   document.querySelectorAll('.legal-modal').forEach(modal => {
     modal.addEventListener('click', e => {
@@ -1061,20 +1071,4 @@
       ring.style.width = '36px';
       ring.style.height = '36px';
     });
-  });
-
-  // Scroll reveal
-  const reveals = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        observer.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.1 });
-
-  reveals.forEach(el => observer.observe(el));
-</script>
-</body>
-</html>
+  }
